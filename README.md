@@ -54,16 +54,16 @@ To use it, it needs the following parameters:
 ![picture](image.png)
 
 In the picture appears the original parameters, changing:
-1. original image
-2. setting minimum radius of 50, it shows bigger circles, and smaller circles disappear.
-3. setting maximum radius of 250, it shows bigger circles.
+1. Original image
+2. Setting minimum radius of 50, it shows bigger circles, and smaller circles disappear.
+3. Setting maximum radius of 250, it shows bigger circles.
 
-1. setting cannyedgeth of 300, as is bigger, any circle appears.;
-2. setting hough_accum_resolution of 9, it appear lots of circle.
-3. setting min_circle_dist=4, it appears closer circles.
+1. Setting cannyedgeth of 300, as is bigger, any circle appears.;
+2. Setting hough_accum_resolution of 9, it appear lots of circle.
+3. Setting min_circle_dist=4, it appears closer circles.
 
 ## Run the code
 
 1. Make a new directory named build
-2. go to build and execute *cmake ..* and then *make*.
+2. Go to build directory and execute *cmake ..* and then *make*.
 3. Run file *./webcam_capture* - (you have to have a webcam previously installed).
