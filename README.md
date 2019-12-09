@@ -59,7 +59,7 @@ In the picture appears the original parameters, changing:
 3. Setting maximum radius of 250, it shows bigger circles.
 
 1. Setting cannyedgeth of 300, as is bigger, any circle appears.;
-2. Setting hough_accum_resolution of 9, it appear lots of circle.
+2. Setting hough_accum_resolution of 9, it appears lots of circle.
 3. Setting min_circle_dist=4, it appears closer circles.
 
 ## Run the code
