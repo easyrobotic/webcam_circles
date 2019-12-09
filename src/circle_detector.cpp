@@ -10,14 +10,39 @@
 #include <vector>
 
 //constants
-const int GAUSSIAN_BLUR_SIZE = 7;
-const double GAUSSIAN_BLUR_SIGMA = 2;
-const double CANNY_EDGE_TH = 150;
-const double HOUGH_ACCUM_RESOLUTION = 2;
-const double MIN_CIRCLE_DIST = 40;
-const double HOUGH_ACCUM_TH = 70;
-const int MIN_RADIUS = 20;
-const int MAX_RADIUS = 100;
+const int GAUSSIAN_BLUR_SIZE = 7; //gb_size
+const double GAUSSIAN_BLUR_SIGMA = 2; //gb_sigma
+const double CANNY_EDGE_TH = 150; //ceth
+const double HOUGH_ACCUM_RESOLUTION = 2; //har
+const double MIN_CIRCLE_DIST = 40; //mincdist
+const double HOUGH_ACCUM_TH = 70; //houghacth
+const int MIN_RADIUS = 20; //minrad
+const int MAX_RADIUS = 100; //maxrad
+
+
+ cv::Mat compute_circle (cv::Mat image,  std::vector<cv::Vec3f> circles,const int gb_size,const double gb_sigma,const double ceth,const double har,const double mincdist, const double houghacth,const int minrad,const int maxrad){
+  cv::Point center;
+  int radius;
+  cv::Mat gray_image;
+  cv::Mat img;
+  image.copyTo(img);
+  cv::cvtColor(img, gray_image, CV_BGR2GRAY); // converting the image into a gray image
+  cv::GaussianBlur(gray_image, gray_image, cv::Size(gb_size, gb_size), gb_sigma );
+  cv::HoughCircles(gray_image, circles, CV_HOUGH_GRADIENT, har, mincdist, ceth, houghacth, minrad, maxrad );
+
+  for(unsigned int ii = 0; ii < circles.size(); ii++ )
+  {
+      if ( circles[ii][0] != -1 )
+      {
+              center = cv::Point(cvRound(circles[ii][0]), cvRound(circles[ii][1]));
+              radius = cvRound(circles[ii][2]);
+              cv::circle(img, center, 5, cv::Scalar(0,0,255), -1, 8, 0 );// circle center in green
+              cv::circle(img, center, radius, cv::Scalar(0,0,255), 3, 8, 0 );// circle perimeter in red
+      }
+  }
+  return img;
+
+}
 
 int main(int argc, char *argv[])
 {
@@ -69,31 +94,56 @@ int main(int argc, char *argv[])
         //clear previous circles
         circles.clear();
 
-        // If input image is RGB, convert it to gray
-        cv::cvtColor(image, gray_image, CV_BGR2GRAY);
+//original
+        cv::Mat original_houghc = compute_circle (image, circles, GAUSSIAN_BLUR_SIZE, GAUSSIAN_BLUR_SIGMA, CANNY_EDGE_TH , HOUGH_ACCUM_RESOLUTION, MIN_CIRCLE_DIST, HOUGH_ACCUM_TH, MIN_RADIUS, MAX_RADIUS);
 
-        //Reduce the noise so we avoid false circle detection
-        cv::GaussianBlur( gray_image, gray_image, cv::Size(GAUSSIAN_BLUR_SIZE, GAUSSIAN_BLUR_SIZE), GAUSSIAN_BLUR_SIGMA );
+        cv::Mat output_image2 = compute_circle (image, circles, GAUSSIAN_BLUR_SIZE, GAUSSIAN_BLUR_SIGMA, CANNY_EDGE_TH , HOUGH_ACCUM_RESOLUTION, MIN_CIRCLE_DIST, HOUGH_ACCUM_TH, 50, MAX_RADIUS);
 
-        //Apply the Hough Transform to find the circles
-        cv::HoughCircles( gray_image, circles, CV_HOUGH_GRADIENT, HOUGH_ACCUM_RESOLUTION, MIN_CIRCLE_DIST, CANNY_EDGE_TH, HOUGH_ACCUM_TH, MIN_RADIUS, MAX_RADIUS );
+        cv::Mat output_image3 = compute_circle (image, circles, GAUSSIAN_BLUR_SIZE, GAUSSIAN_BLUR_SIGMA, CANNY_EDGE_TH , HOUGH_ACCUM_RESOLUTION, MIN_CIRCLE_DIST, HOUGH_ACCUM_TH, MIN_RADIUS, 250);
 
-        //draw circles on the image
-        for(unsigned int ii = 0; ii < circles.size(); ii++ )
-        {
-            if ( circles[ii][0] != -1 )
-            {
-                    center = cv::Point(cvRound(circles[ii][0]), cvRound(circles[ii][1]));
-                    radius = cvRound(circles[ii][2]);
-                    cv::circle(image, center, 5, cv::Scalar(0,0,255), -1, 8, 0 );// circle center in green
-                    cv::circle(image, center, radius, cv::Scalar(0,0,255), 3, 8, 0 );// circle perimeter in red
-            }
-        }
+        cv::Mat output_image4 = compute_circle (image, circles, GAUSSIAN_BLUR_SIZE, GAUSSIAN_BLUR_SIGMA, 300 , HOUGH_ACCUM_RESOLUTION, MIN_CIRCLE_DIST, HOUGH_ACCUM_TH, MIN_RADIUS, MAX_RADIUS);
+
+        cv::Mat output_image5 = compute_circle (image, circles, GAUSSIAN_BLUR_SIZE, GAUSSIAN_BLUR_SIGMA, CANNY_EDGE_TH , 9, MIN_CIRCLE_DIST, HOUGH_ACCUM_TH, MIN_RADIUS, MAX_RADIUS);
+
+        cv::Mat output_image6 = compute_circle (image, circles, GAUSSIAN_BLUR_SIZE, GAUSSIAN_BLUR_SIGMA, CANNY_EDGE_TH , HOUGH_ACCUM_RESOLUTION, 4, HOUGH_ACCUM_TH, MIN_RADIUS, MAX_RADIUS);
+
+        //***********Showing different created images *************//
+
+        cv::Mat Output1;
+        cv::Mat Output2;
+
+        cv::Mat matArray[3] = {original_houghc,output_image2,output_image3};
+        cv::hconcat(matArray,3,Output1);
+        cv::Mat matArray2[3] = {output_image4,output_image5,output_image6};
+        cv::hconcat(matArray2,3,Output2);
+        cv::imshow("houghcircles: original, min_radius=50 , max_radius =250", Output1);
+        cv::imshow("houghcircles: cannyedgeth= 300,  hough_accum_resolution =9, mincircledist=4", Output2);
+//  cv::HoughCircles(gray_image, circles, CV_HOUGH_GRADIENT,  mincdist,  houghacth,  );
+/*
+const int GAUSSIAN_BLUR_SIZE = 7; //gb_size
+const double GAUSSIAN_BLUR_SIGMA = 2; //gb_sigma
+const double CANNY_EDGE_TH = 150; //ceth
+const double HOUGH_ACCUM_RESOLUTION = 2; //har
+const double MIN_CIRCLE_DIST = 40; //mincdist
+const double HOUGH_ACCUM_TH = 70; //houghacth
+const int MIN_RADIUS = 20; //minrad
+const int MAX_RADIUS = 100; //maxrad
+*/
+
 
     //********************************************************************
 
         //show image
-        cv::imshow("Output Window", image);
+      /*  cv::imshow("Output Window", output_image);
+        cv::imshow("Output Window2", output_image2);
+
+        cv::imshow("Output Window3", output_image3);
+
+        cv::imshow("Output Window4", output_image4);
+
+        cv::imshow("Output Window5", output_image5);
+*/
+
 
 		//Waits 1 millisecond to check if a key has been pressed. If so, breaks the loop. Otherwise continues.
         if((unsigned char)(cv::waitKey(1)) == 'q') break;
