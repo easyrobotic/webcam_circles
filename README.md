@@ -7,7 +7,7 @@ As we can see in the code, we use the following functions:
 1. First it applies function [GaussianBlur](https://docs.opencv.org/2.4/modules/imgproc/doc/filtering.html?highlight=gaussianblur#gaussianblur).
 This function blurs an image using a Gaussian filter.
 It has the following parameters:
-   *cv::GaussianBlur( gray_image, gray_image, cv::Size(GAUSSIAN_BLUR_SIZE, GAUSSIAN_BLUR_SIZE), GAUSSIAN_BLUR_SIGMA );*
+   *cv::GaussianBlur*( gray_image, gray_image, cv::Size(GAUSSIAN_BLUR_SIZE, GAUSSIAN_BLUR_SIZE), GAUSSIAN_BLUR_SIGMA );
    **gray_image** --> is the input and the output image.
    **Size(GAUSSIAN_BLUR_SIZE, GAUSSIAN_BLUR_SIZE)** -> Gaussian kernel size, defined in the header of the code: 7.
    **GAUSSIAN_BLUR_SIGMA** -> sigmaX = sigmaY. Gaussian kernel standard deviation in X direction, defined in the header of the code: 2.
@@ -15,9 +15,9 @@ It has the following parameters:
 
 2. Apply the Hough Transform to find the circles, using the function [HoughCircles](https://docs.opencv.org/2.4/doc/tutorials/imgproc/imgtrans/hough_circle/hough_circle.html)
 The Hough Circle Transform is used to detect circles over an image. In the circle case, we need three parameters to define a circle:
-  - **x_{center}
-  - y_{center}
-  - radius **
+  - *x_{center}*
+  - *y_{center}*
+  - *radius *
 
 The function **cv::HoughCircles**( gray_image, circles, CV_HOUGH_GRADIENT, HOUGH_ACCUM_RESOLUTION, MIN_CIRCLE_DIST, CANNY_EDGE_TH, HOUGH_ACCUM_TH, MIN_RADIUS, MAX_RADIUS ) [HoughCircles](https://docs.opencv.org/2.4/modules/imgproc/doc/feature_detection.html?highlight=houghcircles#houghcircles)
 To use it, it needs the following parameters:
