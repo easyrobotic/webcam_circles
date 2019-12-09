@@ -7,8 +7,7 @@ As we can see in the code, we use the following functions:
 1. First it applies function [GaussianBlur](https://docs.opencv.org/2.4/modules/imgproc/doc/filtering.html?highlight=gaussianblur#gaussianblur).
 This function blurs an image using a Gaussian filter.
 It has the following parameters:
-
-  - *cv::GaussianBlur*( gray_image, gray_image, cv::Size(GAUSSIAN_BLUR_SIZE, GAUSSIAN_BLUR_SIZE), GAUSSIAN_BLUR_SIGMA )
+*cv::GaussianBlur*( gray_image, gray_image, cv::Size(GAUSSIAN_BLUR_SIZE, GAUSSIAN_BLUR_SIZE), GAUSSIAN_BLUR_SIGMA )
   - **gray_image** --> is the input and the output image.
   - **Size(GAUSSIAN_BLUR_SIZE, GAUSSIAN_BLUR_SIZE)** -> Gaussian kernel size, defined in the header of the code: 7.
   - **GAUSSIAN_BLUR_SIGMA** -> sigmaX = sigmaY. Gaussian kernel standard deviation in X direction, defined in the header of the code: 2.
@@ -46,11 +45,11 @@ To use it, it needs the following parameters:
   }`
 
 
-##FunctionCreated
+## FunctionCreated
 
 **compute_circle** -> this function contains the houghcircles algorithm.
 
-##OUTPUT
+## OUTPUT
 
 ![picture](image.png)
 
